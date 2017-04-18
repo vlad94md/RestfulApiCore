@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "view";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+<!-- Angular Material Library -->
+<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
+<div ng-app="BlankApp">
+
+    <div ng-controller="AppCtrl" ng-cloak>
+        <md-content class="md-padding">
+            <md-nav-bar md-selected-nav-item="currentNavItem"
+                        nav-bar-aria-label="navigation links">
+                <md-nav-item md-nav-click="goto('page1')" name="page1">
+                    Page One
+                </md-nav-item>
+                <md-nav-item md-nav-click="goto('page2')" name="page2">
+                    Page Two
+                </md-nav-item>
+                <md-nav-item md-nav-click="goto('page3')" name="page3">
+                    Page Three
+                </md-nav-item>
+            </md-nav-bar>
+            <div class="ext-content">
+                External content for `<span>{{currentNavItem}}</span>`.
+            </div>
+
+            <md-checkbox ng-model="disableInkBar">Disable Ink Bar</md-checkbox>
+        </md-content>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    (function () {
+        'use strict';
+
+        var app = angular.module('BlankApp', ['ngMaterial'])
+            .config(function ($mdThemingProvider) {
+                $mdThemingProvider.theme('default')
+                    .primaryPalette('pink')
+                    .accentPalette('orange');
+            });
+
+        app.controller('AppCtrl', AppCtrl);
+
+
+        function AppCtrl($scope, $http) {
+            $scope.currentNavItem = 'page1';
+
+            $http({
+                method: 'GET',
+                url: 'booking/getbookings'
+            }).then(function (response) {
+                alert.show("works")
+            }, function (response) {
+            });
+        }
+    })();
+</script>
