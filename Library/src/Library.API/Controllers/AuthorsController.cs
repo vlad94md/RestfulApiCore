@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Library.API.Helpers;
 using Library.API.Models;
 using Library.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Library.API.Controllers
 {
@@ -24,20 +26,21 @@ namespace Library.API.Controllers
         {
             var authorsEntities = repository.GetAuthors();
 
-            var authors = new List<AuthorDto>();
+            var authors = Mapper.Map<IEnumerable<AuthorDto>>(authorsEntities);
+            return Ok(authors);
+        }
 
-            foreach (var author in authorsEntities)
+        [HttpGet("{id}")]
+        public IActionResult GetAuthor(Guid id)
+        {
+            var author = repository.GetAuthor(id);
+            if (author == null)
             {
-                authors.Add(new AuthorDto()
-                {
-                    Id = author.Id,
-                    Name = $"{author.FirstName} {author.LastName}",
-                    Genre = author.Genre,
-                    Age = author.DateOfBirth.GetCurrentAge()
-                });
+                return NotFound();
             }
 
-            return new JsonResult(authors);
+            var authorDto = Mapper.Map<AuthorDto>(author);
+            return Ok(author);
         }
     }
 }
