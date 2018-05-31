@@ -65,7 +65,12 @@ namespace Library.API
             }
             else
             {
-                app.UseExceptionHandler();
+                app.UseExceptionHandler( appBuilder => {
+                    appBuilder.Run(async context => {
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsync("An unxpected fault happened. Try again latter.");
+                    });
+                });
             }
 
             AutoMapper.Mapper.Initialize(cfg =>
@@ -75,6 +80,8 @@ namespace Library.API
                     .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.GetCurrentAge()));
 
                 cfg.CreateMap<Book, BookDto>();
+
+                cfg.CreateMap<AuthorCreationDto, Author>();
             });
 
             libraryContext.EnsureSeedDataForContext();

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Library.API.Services;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol.Core.Types;
 
 namespace Library.API.Controllers
 {
